@@ -26,7 +26,7 @@
         @click.stop="sideNav = !sideNav"
         class="hidden-sm-and-up "></v-toolbar-side-icon>
       <v-toolbar-title>
-        <router-link to="/" tag="span" style="cursor: pointer">AuthVue</router-link>
+        <router-link to="/" tag="span" style="cursor: pointer">Authentification</router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-xs-only">
@@ -48,9 +48,7 @@
       </v-toolbar-items>
     </v-toolbar>
     <v-content>
-      <v-container fluid>
         <router-view></router-view>
-      </v-container>
     </v-content>
     <v-footer app dark color="primary" style="padding-left:10px" >
       <span>&copy; 2018</span>
@@ -59,6 +57,8 @@
 </template>
 
 <script>
+import {mapActions, mapGetters} from 'vuex'
+
 export default {
   data () {
     return {
@@ -66,6 +66,11 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'currentUser',
+      'error',
+      'loading'
+    ]),
     menuItems () {
       let menuItems = [
         {icon: 'face', title: 'Sign up', link: '/signup'},
@@ -73,19 +78,23 @@ export default {
       ]
       if (this.userIsAuthenticated) {
         menuItems = [
+          // {icon: 'format-align-left', title: 'User List', link: '/user-list'},
           {icon: 'person', title: 'Profile', link: '/profile'}
         ]
       }
       return menuItems
     },
     userIsAuthenticated () {
-      return this.$store.getters.user !== null && this.$store.getters.user !== undefined
+      return this.currentUser !== null && this.currentUser !== undefined
     }
   },
   methods: {
+    ...mapActions({
+      logout: 'logout'
+    }),
     onLogout () {
-      this.$store.dispatch('logout')
-      this.$router.push('/')
+      this.logout()
+        .then(() => this.$router.push('/'))
     }
   }
 }

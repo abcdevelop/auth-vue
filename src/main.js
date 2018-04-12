@@ -23,7 +23,7 @@ new Vue({
   template: '<App/>',
   created () {
     firebase.initializeApp({
-      // à renseigner
+
     })
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {

@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-layout v-if="loading">
       <v-flex xs12 class="text-xs-center">
         <v-progress-circular
@@ -9,9 +9,9 @@
           :size="70"></v-progress-circular>
       </v-flex>
     </v-layout>
-    <v-layout v-if="!loading">
+    <v-layout v-else>
       <v-flex xs12 class="text-xs-center">
-        <v-card>
+        <v-card height="85vh">
           <v-card-title>
             <h3 class="headline mb-0">Home page</h3>
           </v-card-title>
@@ -22,11 +22,12 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 export default {
   computed: {
-    loading () {
-      return this.$store.getters.loading
-    }
+    ...mapGetters([
+      'loading'
+    ])
   }
 }
 </script>
